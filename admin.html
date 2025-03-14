@@ -120,6 +120,7 @@
     </style>
 </head>
 <body>
+
     <div class="login-container">
         <div class="logo">
             <h1>AKG <span>Fashion</span></h1>
@@ -151,14 +152,19 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            // Bu kısımda normalde bir API'a istek atılırdı, örnek olarak basit bir kontrol yapıyoruz
             if(username === 'admin' && password === 'admin123') {
-                // Başarılı giriş durumunda admin paneline yönlendirme
-                window.location.href = '/admin/dashboard';
+                localStorage.setItem('isAdmin', 'true'); // Admin oturumunu kaydet
+                window.location.href = 'admin-dashboard.html'; // Yönlendirme yap
             } else {
                 alert('Kullanıcı adı veya şifre hatalı!');
             }
         });
+
+        // Eğer admin zaten giriş yaptıysa, doğrudan admin paneline yönlendir
+        if (localStorage.getItem('isAdmin') === 'true') {
+            window.location.href = 'admin-dashboard.html';
+        }
     </script>
+
 </body>
 </html>
