@@ -1,0 +1,681 @@
+                <div class="user-actions">
+                    <a href="/login" class="login-button">Giriş Yap</a>
+                    <a href="#">Sepetim</a>
+                </div>
+                
+                <style>
+                    .login-button {
+                        background-color: #000;
+                        color: white !important;
+                        padding: 8px 15px;
+                        border-radius: 4px;
+                        transition: background-color 0.3s;
+                    }
+                    
+                    .login-button:hover {
+                        background-color: #333;
+                    }
+                </style><!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKG Fashion - Şık ve Modern Erkek Giyim</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .logo span {
+            color: #333;
+        }
+        
+        .search-bar {
+            display: flex;
+            width: 40%;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+        
+        .search-bar button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .user-actions a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .navigation {
+            border-top: 1px solid #eee;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            padding: 15px 0;
+        }
+        
+        .nav-menu li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        .nav-menu li a:hover::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #3498db;
+        }
+        
+        .hero {
+            height: 500px;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1200/500') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .hero-content {
+            max-width: 700px;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .categories {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title h2 {
+            font-size: 32px;
+            color: #333;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: #3498db;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .category-item {
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .category-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .category-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+        }
+        
+        .category-info h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        
+        .featured-products {
+            margin-bottom: 60px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .product-image {
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-info h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .product-price {
+            color: #3498db;
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .product-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .add-to-cart {
+            flex: 1;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .wishlist {
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .newsletter {
+            background-color: #f0f0f0;
+            padding: 60px 0;
+            margin-bottom: 60px;
+        }
+        
+        .newsletter-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .newsletter h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .newsletter p {
+            margin-bottom: 30px;
+            color: #666;
+        }
+        
+        .newsletter-form {
+            display: flex;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+        
+        .newsletter-form button {
+            padding: 15px 25px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #3498db;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #3498db;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+        }
+        
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero {
+                height: 400px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">
+                    AKG <span>Fashion</span>
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Ne aramak istersiniz?">
+                    <button>Ara</button>
+                </div>
+                <div class="user-actions">
+                    <a href="/login">Giriş Yap</a>
+                    <a href="#">Sepetim</a>
+                </div>
+            </div>
+            <nav class="navigation">
+                <ul class="nav-menu">
+                    <li><a href="#">Ana Sayfa</a></li>
+                    <li><a href="#">Gömlek</a></li>
+                    <li><a href="#">Pantolon</a></li>
+                    <li><a href="#">Tişört</a></li>
+                    <li><a href="#">Ceket & Mont</a></li>
+                    <li><a href="#">Ayakkabı</a></li>
+                    <li><a href="#">Aksesuar</a></li>
+                    <li><a href="#">İndirimler</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>ERKEK YENİ SEZON KOLEKSİYONU</h1>
+                <p>Modern erkek stilini yansıtan en şık tasarımlar ve en kaliteli kumaşlarla hazırlanan yeni sezon koleksiyonumuzu keşfedin.</p>
+                <a href="#" class="btn">Şimdi Alışveriş Yap</a>
+            </div>
+        </section>
+        
+        <style>
+            .product-variants {
+                display: flex;
+                gap: 5px;
+                margin-bottom: 15px;
+            }
+            
+            .variant-color {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                border: 1px solid #ddd;
+                cursor: pointer;
+            }
+            
+            .blue {
+                background-color: #3498db;
+            }
+            
+            .white {
+                background-color: #ffffff;
+            }
+            
+            .black {
+                background-color: #2c3e50;
+            }
+            
+            .gray {
+                background-color: #7f8c8d;
+            }
+            
+            .red {
+                background-color: #e74c3c;
+            }
+        </style>
+        
+        <section class="categories container">
+            <div class="section-title">
+                <h2>Kategoriler</h2>
+            </div>
+            <div class="category-grid">
+                <div class="category-item">
+                    <img src="/api/placeholder/400/300" alt="Gömlekler">
+                    <div class="category-info">
+                        <h3>Gömlekler</h3>
+                        <a href="#" class="btn">Keşfet</a>
+                    </div>
+                </div>
+                <div class="category-item">
+                    <img src="/api/placeholder/400/300" alt="Pantolonlar">
+                    <div class="category-info">
+                        <h3>Pantolonlar</h3>
+                        <a href="#" class="btn">Keşfet</a>
+                    </div>
+                </div>
+                <div class="category-item">
+                    <img src="/api/placeholder/400/300" alt="Ceketler">
+                    <div class="category-info">
+                        <h3>Ceketler & Montlar</h3>
+                        <a href="#" class="btn">Keşfet</a>
+                    </div>
+                </div>
+                <div class="category-item">
+                    <img src="/api/placeholder/400/300" alt="Ayakkabılar">
+                    <div class="category-info">
+                        <h3>Ayakkabılar</h3>
+                        <a href="#" class="btn">Keşfet</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="featured-products container">
+            <div class="section-title">
+                <h2>Öne Çıkan Ürünler</h2>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <a href="product-detail-page" style="text-decoration: none; color: inherit;">
+                        <div class="product-image">
+                            <img src="/api/placeholder/400/400" alt="Slim Fit Gömlek">
+                        </div>
+                        <div class="product-info">
+                            <h3>Slim Fit Mavi Gömlek</h3>
+                            <div class="product-price">₺399,90</div>
+                            <div class="product-variants">
+                                <span class="variant-color blue"></span>
+                                <span class="variant-color white"></span>
+                                <span class="variant-color black"></span>
+                            </div>
+                            <div class="product-buttons">
+                                <button class="add-to-cart">Sepete Ekle</button>
+                                <button class="wishlist">♥</button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/400/400" alt="Kot Pantolon">
+                    </div>
+                    <div class="product-info">
+                        <h3>Slim Fit Kot Pantolon</h3>
+                        <div class="product-price">₺499,90</div>
+                        <div class="product-variants">
+                            <span class="variant-color" style="background-color: #1f3a93;"></span>
+                            <span class="variant-color" style="background-color: #2c3e50;"></span>
+                            <span class="variant-color" style="background-color: #666;"></span>
+                        </div>
+                        <div class="product-buttons">
+                            <button class="add-to-cart">Sepete Ekle</button>
+                            <button class="wishlist">♥</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/400/400" alt="Spor Ayakkabı">
+                    </div>
+                    <div class="product-info">
+                        <h3>Deri Spor Ayakkabı</h3>
+                        <div class="product-price">₺699,90</div>
+                        <div class="product-variants">
+                            <span class="variant-color black"></span>
+                            <span class="variant-color" style="background-color: #795548;"></span>
+                            <span class="variant-color white"></span>
+                        </div>
+                        <div class="product-buttons">
+                            <button class="add-to-cart">Sepete Ekle</button>
+                            <button class="wishlist">♥</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/400/400" alt="Deri Ceket">
+                    </div>
+                    <div class="product-info">
+                        <h3>Siyah Deri Ceket</h3>
+                        <div class="product-price">₺999,90</div>
+                        <div class="product-variants">
+                            <span class="variant-color black"></span>
+                            <span class="variant-color" style="background-color: #795548;"></span>
+                        </div>
+                        <div class="product-buttons">
+                            <button class="add-to-cart">Sepete Ekle</button>
+                            <button class="wishlist">♥</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="newsletter">
+            <div class="container">
+                <div class="newsletter-content">
+                    <h2>Bültenimize Abone Olun</h2>
+                    <p>Yeni erkek koleksiyonları, özel teklifler ve indirimlerden ilk siz haberdar olun!</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="E-posta adresiniz">
+                        <button type="submit">Abone Ol</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>AKG Fashion</h3>
+                    <ul>
+                        <li><a href="#">Hakkımızda</a></li>
+                        <li><a href="#">Mağazalarımız</a></li>
+                        <li><a href="#">Kariyer</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Müşteri Hizmetleri</h3>
+                    <ul>
+                        <li><a href="#">Sıkça Sorulan Sorular</a></li>
+                        <li><a href="#">Sipariş Takibi</a></li>
+                        <li><a href="#">İade ve Değişim</a></li>
+                        <li><a href="#">Kargo ve Teslimat</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Erkek Kategorileri</h3>
+                    <ul>
+                        <li><a href="#">Gömlekler</a></li>
+                        <li><a href="#">Pantolonlar</a></li>
+                        <li><a href="#">Tişörtler</a></li>
+                        <li><a href="#">Ceketler & Montlar</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>İletişim</h3>
+                    <ul>
+                        <li><a href="#">info@akgfashion.com</a></li>
+                        <li><a href="#">+90 212 123 45 67</a></li>
+                        <li><a href="#">İstanbul, Türkiye</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AKG Fashion. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

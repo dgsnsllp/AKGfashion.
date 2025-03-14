@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKG Fashion - Ödeme Ayarları</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .logo h1 span {
+            color: white;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        .admin-name {
+            font-weight: 500;
+        }
+        
+        .menu {
+            padding: 20px 0;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: #444;
+        }
+        
+        .menu-icon {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: #2c3e50;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #000;
+            color: #000;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .form-note {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .bank-account-list {
+            margin-top: 20px;
+        }
+        
+        .bank-account-item {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .bank-account-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .bank-account-details {
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .bank-account-iban {
+            background-color: #eee;
+            padding: 8px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+        
+        .bank-account-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        
+        .payment-instructions {
+            margin-top: 30px;
+        }
+        
+        .add-account-form {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        @media (max-width: 992px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .content {
+                margin-left: 70px;
+            }
+            
+            .sidebar {
+                width: 70px;
+            }
+            
+            .logo h1, .admin-name, .menu-item span {
+                display: none;
+            }
+            
+            .menu-icon {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <h1>AKG <span>Fashion</span></h1>
+        </div>
+        <div class="admin-info">
+            <div class="admin-avatar">A</div>
+            <div class="admin-name">Admin Kullanıcı</div>
+        </div>
+        <div class="menu">
+            <a href="/admin/dashboard" class="menu-item">
+                <div class="menu-icon">📊</div>
+                <span>Dashboard</span>
+            </a>
+            <a href="/admin/products" class="menu-item">
+                <div class="menu-icon">📦</div>
+                <span>Ürünler</span>
+            </a>
+            <a href="/admin/orders" class="menu-item">
+                <div class="menu-icon">🛒</div>
+                <span>Siparişler</span>
+            </a>
+            <a href="/admin/customers" class="menu-item">
+                <div class="menu-icon">👥</div>
+                <span>Müşteriler</span>
+            </a>
+            <a href="/admin/categories" class="menu-item">
+                <div class="menu-icon">🏷️</div>
+                <span>Kategoriler</span>
+            </a>
+            <a href="/admin/campaigns" class="menu-item">
+                <div class="menu-icon">📢</div>
+                <span>Kampanyalar</span>
+            </a>
+            <a href="/admin/content" class="menu-item">
+                <div class="menu-icon">📝</div>
+                <span>İçerik Yönetimi</span>
+            </a>
+            <a href="/admin/settings" class="menu-item active">
+                <div class="menu-icon">⚙️</div>
+                <span>Ayarlar</span>
+            </a>
+            <a href="/admin/logout" class="menu-item">
+                <div class="menu-icon">🚪</div>
+                <span>Çıkış Yap</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div class="header">
+            <h1 class="page-title">Ödeme Ayarları</h1>
+            <div class="header-actions">
+                <button class="btn" onclick="toggleBankForm()">+ Yeni Banka Hesabı Ekle</button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Banka Hesaplarınız</div>
+            </div>
+            
+            <div class="bank-account-list">
+                <div class="bank-account-item">
+                    <div class="bank-account-title">AKG Fashion - İş Bankası TL Hesabı</div>
+                    <div class="bank-account-details">
+                        <div>Şube: İstanbul / Kadıköy (1234)</div>
+                        <div>Hesap No: 12345678</div>
+                        <div>Hesap Sahibi: AKG Textile LTD. ŞTİ.</div>
+                        <div class="bank-account-iban">TR12 3456 7890 1234 5678 9012 34</div>
+                    </div>
+                    <div class="bank-account-actions">
+                        <a href="#" class="action-btn" onclick="editBankAccount(1)">Düzenle</a>
+                        <a href="#" class="action-btn" onclick="deleteBankAccount(1)">Sil</a>
+                    </div>
+                </div>
+                
+                <div class="bank-account-item">
+                    <div class="bank-account-title">AKG Fashion - Garanti Bankası TL Hesabı</div>
+                    <div class="bank-account-details">
+                        <div>Şube: İstanbul / Şişli (4567)</div>
+                        <div>Hesap No: 87654321</div>
+                        <div>Hesap Sahibi: AKG Textile LTD. ŞTİ.</div>
+                        <div class="bank-account-iban">TR98 7654 3210 9876 5432 1098 76</div>
+                    </div>
+                    <div class="bank-account-actions">
+                        <a href="#" class="action-btn" onclick="editBankAccount(2)">Düzenle</a>
+                        <a href="#" class="action-btn" onclick="deleteBankAccount(2)">Sil</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="add-account-form" id="bankAccountForm">
+                <h3>Banka Hesabı Ekle</h3>
+                <form id="addBankForm">
+                    <div class="form-group">
+                        <label for="accountTitle">Hesap Adı</label>
+                        <input type="text" id="accountTitle" placeholder="Örn: AKG Fashion - X Bankası TL Hesabı" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bankName">Banka Adı</label>
+                        <input type="text" id="bankName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="branchInfo">Şube Bilgisi</label>
+                        <input type="text" id="branchInfo" placeholder="Örn: İstanbul / Kadıköy (1234)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountNumber">Hesap Numarası</label>
+                        <input type="text" id="accountNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountOwner">Hesap Sahibi</label>
+                        <input type="text" id="accountOwner" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="iban">IBAN</label>
+                        <input type="text" id="iban" placeholder="TR12 3456 7890 1234 5678 9012 34" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountStatus">Durum</label>
+                        <select id="accountStatus" required>
+                            <option value="1">Aktif</option>
+                            <option value="0">Pasif</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn">Kaydet</button>
+                        <button type="button" class="btn btn-outline" onclick="toggleBankForm()">İptal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Havale/EFT Ödeme Açıklaması</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="paymentInstructions">Müşterilere Gösterilecek Ödeme Talimatları</label>
+                <textarea id="paymentInstructions">Siparişinizi tamamladıktan sonra, lütfen yukarıdaki banka hesaplarından birine ödemenizi yapınız. 
+
+Ödeme yaparken açıklama kısmına sipariş numaranızı yazmayı unutmayınız (Örnek: AKG-12345).
+
+Ödemeniz tarafımıza ulaştığında siparişiniz işleme alınacak ve kargoya verilecektir.
+
+Herhangi bir sorunuz olursa, lütfen bizimle iletişime geçiniz: info@akgfashion.com</textarea>
+                <div class="form-note">Bu metin, ödeme sayfasında müşterilerinize gösterilecektir.</div>
+            </div>
+            
+            <div class="form-group">
+                <button class="btn" onclick="savePaymentInstructions()">Kaydet</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleBankForm() {
+            const form = document.getElementById('bankAccountForm');
+            form.style.display = form.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function editBankAccount(id) {
+            toggleBankForm();
+            // Normalde burada API'dan hesap bilgilerini çekip form alanlarını doldururduk
+            
+            // Örnek veri doldurma
+            if(id === 1) {
+                document.getElementById('accountTitle').value = 'AKG Fashion - İş Bankası TL Hesabı';
+                document.getElementById('bankName').value = 'İş Bankası';
+                document.getElementById('branchInfo').value = 'İstanbul / Kadıköy (1234)';
+                document.getElementById('accountNumber').value = '12345678';
+                document.getElementById('accountOwner').value = 'AKG Textile LTD. ŞTİ.';
+                document.getElementById('iban').value = 'TR12 3456 7890 1234 5678 9012 34';
+                document.getElementById('accountStatus').value = '1';
+            }
+        }
+        
+        function deleteBankAccount(id) {
+            if(confirm('Bu banka hesabını silmek istediğinize emin misiniz?')) {
+                // Normalde burada API'ya silme isteği gönderilirdi
+                alert('Banka hesabı silindi');
+            }
+        }
+        
+        document.getElementById('addBankForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Normalde burada form verileri alınıp API'ya gönderilirdi
+            alert('Banka hesabı kaydedildi!');
+            toggleBankForm();
+        });
+        
+        function savePaymentInstructions() {
+            // Normalde burada form verileri alınıp API'ya gönderilirdi
+            alert('Ödeme talimatları kaydedildi!');
+        }
+    </script>
+</body>
+</html>

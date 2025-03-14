@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKG Fashion - Ürünleri Filtrele</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: #333;
+        }
+        
+        .search-bar {
+            display: flex;
+            width: 40%;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+        
+        .search-bar button {
+            padding: 10px 15px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .user-actions a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-button {
+            background-color: #000;
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .login-button:hover {
+            background-color: #333;
+        }
+        
+        .navigation {
+            border-top: 1px solid #eee;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            padding: 15px 0;
+        }
+        
+        .nav-menu li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        .nav-menu li a:hover::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #000;
+        }
+        
+        .main-content {
+            padding: 40px 0;
+            display: flex;
+            gap: 30px;
+        }
+        
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+        
+        .filter-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .filter-group-title {
+            font-weight: 500;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        
+        .filter-group-title:after {
+            content: '+';
+        }
+        
+        .filter-group.active .filter-group-title:after {
+            content: '-';
+        }
+        
+        .filter-options {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .filter-group.active .filter-options {
+            max-height: 500px;
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .filter-option input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .filter-color {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .color-item {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .color-item:hover, .color-item.active {
+            border-color: #000;
+        }
+        
+        .price-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .price-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .price-separator {
+            color: #aaa;
+        }
+        
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .filter-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .filter-btn-apply {
+            background-color: #000;
+            color: white;
+            border: none;
+        }
+        
+        .filter-btn-clear {
+            background-color: transparent;
+            color: #000;
+            border: 1px solid #000;
+        }
+        
+        .product-grid {
+            flex: 1;
+        }
+        
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .product-count {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .sort-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #333;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-info h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .product-price {
+            color: #000;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .product-variants {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .variant-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+        }
+        
+        .product-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .add-to-cart {
+            flex: 1;
+            padding: 8px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .wishlist {
+            padding: 8px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 36px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            gap: 5px;
+        }
+        
+        .pagination-item {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .pagination-item.active {
+            background-color: #000;
+            color: white;
+            border-color: #000;
+        }
+        
+        .active-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-tag {
+            padding: 5px 10px;
+            background-color: #f5f5f5;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+        }
+        
+        .filter-tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .mobile-filter-toggle {
+            display: none;
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        /* Renk stilleri */
+        .blue {
+            background-color: #3498db;
+        }
+        
+        .navy {
+            background-color: #1a5276;
+        }
+        
+        .white {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+        }
+        
+        .black {
+            background-color: #2c3e50;
+        }
+        
+        .gray {
+            background-color: #7f8c8d;
+        }
+        
+        .red {
+            background-color: #e74c3c;
+        }
+        
+        .burgundy {
+            background-color: #900C3F;
+        }
+        
+        .green {
+            background-color: #27ae60;
+        }
+        
+        .olive {
+            background-color: #7D8C37;
+        }
+        
+        .brown {
+            background-color: #795548;
+        }
+        
+        .beige {
+            background-color: #E8D4B9;
+        }
+        
+        .purple {
+            background-color: #8e44ad;
+        }
+        
+        .pink {
+            background-color: #f1948a;
+        }
+        
+        .yellow {
+            background-color: #f1c40f;
+        }
+        
+        .orange {
+            background-color: #e67e22;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #000;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #000;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+        }
+        
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .mobile-filter-toggle {
+                display: block;
+            }
+            
+            .sidebar {
+                width: 100%;
+                display: none;
+            }
+            
+            .sidebar.show {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <a href="/" class="logo">AKG <span>Fashion</span></a>
+                <div class="search-bar">
+                    <input type="text" placeholder="Ne aramak istersiniz?" id="searchInput">
+                    <button type="button" onclick="searchProducts()">Ara</button>
+                </div>
+                <div class="user-actions">
+                    <a href="/login" class="login-button">Giriş Yap</a>
+                    <a href="#">Sepetim</a>
+                </div>
+            </div>
+            <nav class="navigation">
+                <ul class="nav-menu">
+                    <li><a href="/">Ana Sayfa</a></li>
+                    <li><a href="#" class="active">Gömlek</a></li>
+                    <li><a href="#">Pantolon</a></li>
+                    <li><a href="#">Tişört</a></li>
+                    <li><a href="#">Ceket & Mont</a></li>
+                    <li><a href="#">Ayakkabı</a></li>
+                    <li><a href="#">Aksesuar</a></li>
+                    <li><a href="#">İndirimler</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="main-content container">
+        <button class="mobile-filter-toggle" onclick="toggleFilters()">Filtreleri Göster</button>
+        
+        <aside class="sidebar" id="filterSidebar">
+            <div class="filter-card">
+                <h3 class="filter-title">Filtreler</h3>
+                
+                <div class="filter-group active">
+                    <div class="filter-group-title" onclick="toggleFilterGroup(this)">Kategori</div>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="categoryFormal" checked>
+                            <label for="categoryFormal">Klasik Gömlek</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="categoryCasual">
+                            <label for="categoryCasual">Spor Gömlek</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="categorySlimFit">
+                            <label for="categorySlimFit">Slim Fit Gömlek</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="categoryRegularFit">
+                            <label for="categoryRegularFit">Regular Fit Gömlek</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="categoryPrint">
+                            <label for="categoryPrint">Desenli Gömlek</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-group active">
+                    <div class="filter-group-title" onclick="toggleFilterGroup(this)">Fiyat Aralığı</div>
+                    <div class="filter-options">
+                        <div class="price-range">
+                            <input type="number" class="price-input" placeholder="Min" min="0">
+                            <span class="price-separator">-</span>
+                            

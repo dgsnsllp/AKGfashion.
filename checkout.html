@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKG Fashion - Ödeme</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: #333;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .user-actions a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .main-content {
+            padding: 40px 0;
+        }
+        
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        
+        .checkout-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .checkout-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .bank-accounts {
+            margin-bottom: 30px;
+        }
+        
+        .bank-account {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+        
+        .bank-account-title {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .bank-account-details {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .bank-account-iban {
+            background-color: #eee;
+            padding: 8px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+        
+        .payment-steps {
+            list-style-type: decimal;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+        
+        .payment-steps li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .order-summary {
+            position: sticky;
+            top: 100px;
+        }
+        
+        .order-items {
+            margin-bottom: 20px;
+        }
+        
+        .order-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .order-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+        
+        .order-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .order-item-details {
+            flex: 1;
+        }
+        
+        .order-item-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .order-item-options {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .order-item-price {
+            font-weight: 500;
+        }
+        
+        .order-item-quantity {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .price-summary {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .price-row.total {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        
+        .status-bar {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        
+        .status-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .status-step:after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background-color: #ddd;
+        }
+        
+        .status-step:last-child:after {
+            display: none;
+        }
+        
+        .status-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .status-icon.active {
+            background-color: #000;
+            color: white;
+        }
+        
+        .status-text {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .status-text.active {
+            color: #000;
+            font-weight: 500;
+        }
+        
+        .checkout-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background-color: #000;
+            color: white;
+            border: none;
+        }
+        
+        .btn-outline {
+            background-color: white;
+            color: #000;
+            border: 1px solid #000;
+        }
+        
+        .notification-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #000;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .notification-box strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .upload-payment {
+            margin-top: 30px;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ddd;
+            padding: 30px;
+            text-align: center;
+            border-radius: 4px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        
+        .upload-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #777;
+        }
+        
+        .upload-text {
+            color: #777;
+            margin-bottom: 10px;
+        }
+        
+        .upload-note {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #000;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #000;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+        }
+        
+        @media (max-width: 992px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-summary {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <a href="/" class="logo">AKG <span>Fashion</span></a>
+                <div class="user-actions">
+                    <a href="/">Ana Sayfa</a>
+                    <a href="#">Sepetim</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="main-content">
+        <div class="container">
+            <div class="status-bar">
+                <div class="status-step">
+                    <div class="status-icon active">1</div>
+                    <div class="status-text active">Sepet</div>
+                </div>
+                <div class="status-step">
+                    <div class="status-icon active">2</div>
+                    <div class="status-text active">Teslimat</div>
+                </div>
+                <div class="status-step">
+                    <div class="status-icon active">3</div>
+                    <div class="status-text active">Ödeme</div>
+                </div>
+                <div class="status-step">
+                    <div class="status-icon">4</div>
+                    <div class="status-text">Onay</div>
+                </div>
+            </div>
+            
+            <div class="checkout-container">
+                <div class="left-column">
+                    <div class="checkout-section">
+                        <h2 class="checkout-title">Havale/EFT ile Ödeme</h2>
+                        
+                        <div class="notification-box">
+                            <strong>Sipariş No: AKG-12345</strong>
+                            Lütfen ödeme yaparken açıklama kısmına bu sipariş numarasını yazmayı unutmayınız.
+                        </div>
+                        
+                        <div class="bank-accounts">
+                            <div class="bank-account">
+                                <div class="bank-account-title">AKG Fashion - İş Bankası TL Hesabı</div>
+                                <div class="bank-account-details">
+                                    <div>Şube: İstanbul / Kadıköy (1234)</div>
+                                    <div>Hesap No: 12345678</div>
+                                    <div>Hesap Sahibi: AKG Textile LTD. ŞTİ.</div>
+                                    <div class="bank-account-iban">TR12 3456 7890 1234 5678 9012 34</div>
+                                </div>

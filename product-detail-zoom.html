@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKG Fashion - Ürün Detay Zoom</title>
+    <style>
+        /* Ana stil dosyasına eklenecek zoom özellikleri */
+        .product-gallery {
+            position: relative;
+        }
+        
+        .main-image-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            cursor: zoom-in;
+        }
+        
+        .zoom-lens {
+            position: absolute;
+            border: 1px solid #ccc;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.4);
+            cursor: zoom-in;
+            display: none;
+        }
+        
+        .zoom-result {
+            position: fixed;
+            border: 1px solid #ccc;
+            width: 400px;
+            height: 400px;
+            background-color: white;
+            z-index: 1000;
+            overflow: hidden;
+            display: none;
+            pointer-events: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .zoom-result img {
+            position: absolute;
+        }
+        
+        .fullscreen-view {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: none;
+        }
+        
+        .fullscreen-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        
+        .fullscreen-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        
+        .fullscreen-nav {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        
+        .fullscreen-nav button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .thumbnails {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+        
+        .thumbnail {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+        
+        .thumbnail.active, .thumbnail:hover {
+            border-color: #000;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Bu dosya zoom özelliğinin çalışma mantığını gösteriyor. HTML ve JS kodları ürün detay sayfasına entegre edilecek -->
+
+<script>
+    // Zoom özelliği
+    function initZoom() {
+        const mainImage = document.getElementById('mainImage');
+        const mainContainer = document.querySelector('.main-image-container');
+        
+        // Zoom lens ve sonuç alanı oluşturma
+        const lens = document.createElement('div');
+        lens.setAttribute('class', 'zoom-lens');
+        mainContainer.appendChild(lens);
+        
+        const result = document.createElement('div');
+        result.setAttribute('class', 'zoom-result');
+        document.body.appendChild(result);
+        
+        // Tam ekran görüntüleme alanı
+        const fullscreen = document.createElement('div');
+        fullscreen.setAttribute('class', 'fullscreen-view');
+        fullscreen.innerHTML = `
+            <span class="fullscreen-close">&times;</span>
+            <div class="fullscreen-nav">
+                <button class="prev-btn">&lt;</button>
+                <button class="next-btn">&gt;</button>
+            </div>
+            <img src="" class="fullscreen-image" id="fullscreenImage">
+        `;
+        document.body.appendChild(fullscreen);
+        
+        // Tam ekran kapatma
+        const closeBtn = fullscreen.querySelector('.fullscreen-close');
+        closeBtn.addEventListener('click', function() {
+            fullscreen.style.display = 'none';
+        });
+        
+        // Tam ekran gezinme
+        const prevBtn = fullscreen.querySelector('.prev-btn');
+        const nextBtn = fullscreen.querySelector('.next-btn');
+        const fullscreenImage = document.getElementById('fullscreenImage');
+        
+        prevBtn.addEventListener('click', function() {
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            const activeIndex = Array.from(thumbnails).findIndex(thumb => thumb.classList.contains('active'));
+            
+            if (activeIndex > 0) {
+                changeImage(thumbnails[activeIndex - 1]);
+                fullscreenImage.src = thumbnails[activeIndex - 1].src;
+            }
+        });
+        
+        nextBtn.addEventListener('click', function() {
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            const activeIndex = Array.from(thumbnails).findIndex(thumb => thumb.classList.contains('active'));
+            
+            if (activeIndex < thumbnails.length - 1) {
+                changeImage(thumbnails[activeIndex + 1]);
+                fullscreenImage.src = thumbnails[activeIndex + 1].src;
+            }
+        });
+        
+        // Zoom fonksiyonu
+        function getZoom() {
+            const cx = result.offsetWidth / lens.offsetWidth;
+            const cy = result.offsetHeight / lens.offsetHeight;
+            
+            result.style.backgroundImage = `url('${mainImage.src}')`;
+            result.style.backgroundSize = (mainImage.width * cx) + "px " + (mainImage.height * cy) + "px";
+            
+            // Lens pozisyonunu fare konumuna göre ayarlama
+            mainContainer.addEventListener('mousemove', moveLens);
+            mainImage.addEventListener('mouseover', function() {
+                lens.style.display = 'block';
+                result.style.display = 'block';
+            });
+            
+            mainImage.addEventListener('mouseout', function() {
+                lens.style.display = 'none';
+                result.style.display = 'none';
+            });
+            
+            // Ana görüntüye tıklandığında tam ekran görüntüleme
+            mainImage.addEventListener('click', function() {
+                fullscreenImage.src = mainImage.src;
+                fullscreen.style.display = 'flex';
+            });
+            
+            function moveLens(e) {
+                let pos = getCursorPos(e);
+                let x = pos.x - (lens.offsetWidth / 2);
+                let y = pos.y - (lens.offsetHeight / 2);
+                
+                if (x > mainImage.width - lens.offsetWidth) {x = mainImage.width - lens.offsetWidth;}
+                if (x < 0) {x = 0;}
+                if (y > mainImage.height - lens.offsetHeight) {y = mainImage.height - lens.offsetHeight;}
+                if (y < 0) {y = 0;}
+                
+                lens.style.left = x + "px";
+                lens.style.top = y + "px";
+                
+                result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+            }
+            
+            function getCursorPos(e) {
+                let bounds = mainImage.getBoundingClientRect();
+                let x = e.pageX - bounds.left - window.pageXOffset;
+                let y = e.pageY - bounds.top - window.pageYOffset;
+                return {x : x, y : y};
+            }
+        }
+        
+        // Görüntü yüklendiğinde zoom'u başlat
+        mainImage.addEventListener('load', getZoom);
+        
+        // İlk yükleme için getZoom'u çağır (eğer görüntü zaten yüklenmişse)
+        if (mainImage.complete) {
+            getZoom();
+        }
+    }
+    
+    // Görüntü değiştirme
+    function changeImage(thumbnail) {
+        const mainImage = document.getElementById('mainImage');
+        mainImage.src = thumbnail.src;
+        
+        document.querySelectorAll('.thumbnail').forEach(thumb => {
+            thumb.classList.remove('active');
+        });
+        
+        thumbnail.classList.add('active');
+    }
+    
+    // Sayfa yüklendiğinde zoom'u başlat
+    document.addEventListener('DOMContentLoaded', function() {
+        initZoom();
+    });
+</script>
+
+</body>
+</html>

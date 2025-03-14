@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKG Fashion - Ürün Yönetimi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .logo h1 span {
+            color: white;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        .admin-name {
+            font-weight: 500;
+        }
+        
+        .menu {
+            padding: 20px 0;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: #444;
+        }
+        
+        .menu-icon {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: #2c3e50;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #000;
+            color: #000;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table th {
+            color: #7f8c8d;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+        
+        .status-active {
+            background-color: #e8f5e9;
+            color: #000;
+        }
+        
+        .status-inactive {
+            background-color: #ffebee;
+            color: #444;
+        }
+        
+        .action-btn {
+            color: #000;
+            margin-right: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .product-form {
+            display: none;
+            margin-bottom: 30px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            flex: 1;
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .color-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .color-option input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+        
+        .color-preview {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+        }
+        
+        .size-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .size-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .size-option input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+        
+        .image-preview {
+            width: 100%;
+            height: 150px;
+            border: 1px dashed #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            color: #999;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+        
+        .pagination-item {
+            min-width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .pagination-item.active {
+            background-color: #000;
+            color: white;
+            border-color: #000;
+        }
+        
+        @media (max-width: 992px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .content {
+                margin-left: 70px;
+            }
+            
+            .sidebar {
+                width: 70px;
+            }
+            
+            .logo h1, .admin-name, .menu-item span {
+                display: none;
+            }
+            
+            .menu-icon {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <h1>AKG <span>Fashion</span></h1>
+        </div>
+        <div class="admin-info">
+            <div class="admin-avatar">A</div>
+            <div class="admin-name">Admin Kullanıcı</div>
+        </div>
+        <div class="menu">
+            <a href="/admin/dashboard" class="menu-item">
+                <div class="menu-icon">📊</div>
+                <span>Dashboard</span>
+            </a>
+            <a href="/admin/products" class="menu-item active">
+                <div class="menu-icon">📦</div>
+                <span>Ürünler</span>
+            </a>
+            <a href="/admin/orders" class="menu-item">
+                <div class="menu-icon">🛒</div>
+                <span>Siparişler</span>
+            </a>
+            <a href="/admin/customers" class="menu-item">
+                <div class="menu-icon">👥</div>
+                <span>Müşteriler</span>
+            </a>
+            <a href="/admin/categories" class="menu-item">
+                <div class="menu-icon">🏷️</div>
+                <span>Kategoriler</span>
+            </a>
+            <a href="/admin/campaigns" class="menu-item">
+                <div class="menu-icon">📢</div>
+                <span>Kampanyalar</span>
+            </a>
+            <a href="/admin/content" class="menu-item">
+                <div class="menu-icon">📝</div>
+                <span>İçerik Yönetimi</span>
+            </a>
+            <a href="/admin/settings" class="menu-item">
+                <div class="menu-icon">⚙️</div>
+                <span>Ayarlar</span>
+            </a>
+            <a href="/admin/logout" class="menu-item">
+                <div class="menu-icon">🚪</div>
+                <span>Çıkış Yap</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div class="header">
+            <h1 class="page-title">Ürün Yönetimi</h1>
+            <div class="header-actions">
+                <button class="btn btn-outline" onclick="toggleFilters()">Filtrele</button>
+                <button class="btn" onclick="toggleProductForm()">+ Yeni Ürün Ekle</button>
+            </div>
+        </div>
+        
+        <div class="card product-form" id="productForm">
+            <div class="card-header">
+                <div class="card-title">Yeni Ürün Ekle</div>
+                <button class="btn btn-outline" onclick="toggleProductForm()">İptal</button>
+            </div>
+            <form id="addProductForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName">Ürün Adı</label>
+                        <input type="text" id="productName" name="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCode">Ürün Kodu</label>
+                        <input type="text" id="productCode" name="productCode" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Kategori</label>
+                        <select id="category" name="category" required>
+                            <option value="">Seçiniz</option>
+                            <option value="gomlek">Gömlek</option>
+                            <option value="pantolon">Pantolon</option>
+                            <option value="tisort">Tişört</option>
+                            <option value="ceket">Ceket & Mont</option>
+                            <option value="ayakkabi">Ayakkabı</option>
+                            <option value="aksesuar">Aksesuar</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Fiyat (₺)</label>
+                        <input type="number" id="price" name="price" min="0" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description">Ürün Açıklaması</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="stock">Stok Miktarı</label>
+                        <input type="number" id="stock" name="stock" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Durum</label>
+                        <select id="status" name="status" required>
+                            <option value="1">Aktif</option>
+                            <option value="0">Pasif</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Renk Seçenekleri</label>
+                        <div class="color-options">
+                            <div class="color-option">
+                                <input type="checkbox" id="colorBlack" name="colors[]" value="black">
+                                <div class="color-preview" style="background-color: #2c3e50;"></div>
+                                <label for="colorBlack">Siyah</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorWhite" name="colors[]" value="white">
+                                <div class="color-preview" style="background-color: #ffffff; border: 1px solid #ddd;"></div>
+                                <label for="colorWhite">Beyaz</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorBlue" name="colors[]" value="blue">
+                                <div class="color-preview" style="background-color: #3498db;"></div>
+                                <label for="colorBlue">Mavi</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorNavy" name="colors[]" value="navy">
+                                <div class="color-preview" style="background-color: #1a5276;"></div>
+                                <label for="colorNavy">Lacivert</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorGray" name="colors[]" value="gray">
+                                <div class="color-preview" style="background-color: #7f8c8d;"></div>
+                                <label for="colorGray">Gri</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorRed" name="colors[]" value="red">
+                                <div class="color-preview" style="background-color: #e74c3c;"></div>
+                                <label for="colorRed">Kırmızı</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorBurgundy" name="colors[]" value="burgundy">
+                                <div class="color-preview" style="background-color: #900C3F;"></div>
+                                <label for="colorBurgundy">Bordo</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorGreen" name="colors[]" value="green">
+                                <div class="color-preview" style="background-color: #27ae60;"></div>
+                                <label for="colorGreen">Yeşil</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorOlive" name="colors[]" value="olive">
+                                <div class="color-preview" style="background-color: #7D8C37;"></div>
+                                <label for="colorOlive">Haki</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorBrown" name="colors[]" value="brown">
+                                <div class="color-preview" style="background-color: #795548;"></div>
+                                <label for="colorBrown">Kahverengi</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorBeige" name="colors[]" value="beige">
+                                <div class="color-preview" style="background-color: #E8D4B9;"></div>
+                                <label for="colorBeige">Bej</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorPurple" name="colors[]" value="purple">
+                                <div class="color-preview" style="background-color: #8e44ad;"></div>
+                                <label for="colorPurple">Mor</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorPink" name="colors[]" value="pink">
+                                <div class="color-preview" style="background-color: #f1948a;"></div>
+                                <label for="colorPink">Pembe</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorYellow" name="colors[]" value="yellow">
+                                <div class="color-preview" style="background-color: #f1c40f;"></div>
+                                <label for="colorYellow">Sarı</label>
+                            </div>
+                            <div class="color-option">
+                                <input type="checkbox" id="colorOrange" name="colors[]" value="orange">
+                                <div class="color-preview" style="background-color: #e67e22;"></div>
+                                <label for="colorOrange">Turuncu</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Beden Seçenekleri</label>
+                        <div class="size-options">
+                            <div class="size-option">
+                                <input type="checkbox" id="sizeS" name="sizes[]" value="S">
+                                <label for="sizeS">S</label>
+                            </div>
+                            <div class="size-option">
+                                <input type="checkbox" id="sizeM" name="sizes[]" value="M">
+                                <label for="sizeM">M</label>
+                            </div>
+                            <div class="size-option">
+                                <input type="checkbox" id="sizeL" name="sizes[]" value="L">
+                                <label for="sizeL">L</label>
+                            </div>
+                            <div class="size-option">
+                                <input type="checkbox" id="sizeXL" name="sizes[]" value="XL">
+                                <label for="sizeXL">XL</label>
+                            </div>
+                            <div class="size-option">
+                                <input type="checkbox" id="sizeXXL" name="sizes[]" value="XXL">
+                                <label for="sizeXXL">XXL</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="mainImage">Ana Görsel</label>
+                        <input type="file" id="mainImage" name="mainImage" accept="image/*" style="display: none;">
+                        <div class="image-preview" onclick="document.getElementById('mainImage').click()">
+                            Görsel Seçmek İçin Tıklayın
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="extraImages">Ek Görseller</label>
+                        <input type="file" id="extraImages" name="extraImages" accept="image/*" multiple style="display: none;">
+                        <div class="image-preview" onclick="document.getElementById('extraImages').click()">
+                            Ek Görseller Seçmek İçin Tıklayın (Çoklu Seçim)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="btn">Ürünü Kaydet</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Ürün Listesi</div>
+                <select id="perPage">
+                    <option value="10">10 / sayfa</option>
+                    <option value="25">25 / sayfa</option>
+                    <option value="50">50 / sayfa</option>
+                    <option value="100">100 / sayfa</option>
+                </select>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ürün Kodu</th>
+                        <th>Görsel</th>
+                        <th>Ürün Adı</th>
+                        <th>Kategori</th>
+                        <th>Fiyat</th>
+                        <th>Stok</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>AKG-1001</td>
+                        <td><img src="/api/placeholder/60/60" alt="Ürün Görseli" width="60" height="60" style="object-fit: cover; border-radius: 4px;"></td>
+                        <td>Slim Fit Mavi Gömlek</td>
+                        <td>Gömlek</td>
+                        <td>₺399,90</td>
+                        <td>43</td>
+                        <td><span class="status status-active">Aktif</span></td>
+                        <td>
+                            <a href="#" class="action-btn" onclick="editProduct('AKG-1001')">Düzenle</a>
+                            <a href="#" class="action-btn" onclick="deleteProduct('AKG-1001')">Sil</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>AKG-2035</td>
+                        <td><img src="/api/placeholder/60/60" alt="Ürün Görseli" width="60" height="60" style="object-fit: cover; border-radius: 4px;"></td>
+                        <td>Slim Fit Kot Pantolon</td>
+                        <td>Pantolon</td>
+                        <td>₺499,90</td>
+                        <td>57</td>
+                        <td><span class="status status-active">Aktif</span></td>
+                        <td>
+                            <a href="#" class="action-btn" onclick="editProduct('AKG-2035')">Düzenle</a>
+                            <a href="#" class="action-btn" onclick="deleteProduct('AKG-2035')">Sil</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>AKG-3022</td>
+                        <td><img src="/api/placeholder/60/60" alt="Ürün Görseli" width="60" height="60" style="object-fit: cover; border-radius: 4px;"></td>
+                        <td>Siyah Deri Ceket</td>
+                        <td>Ceket</td>
+                        <td>₺999,90</td>
+                        <td>12</td>
+                        <td><span class="status status-active">Aktif</span></td>
+                        <td>
+                            <a href="#" class="action-btn" onclick="editProduct('AKG-3022')">Düzenle</a>
+                            <a href="#" class="action-btn" onclick="deleteProduct('AKG-3022')">Sil</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>AKG-4017</td>
+                        <td><img src="/api/placeholder/60/60" alt="Ürün Görseli" width="60" height="60" style="object-fit: cover; border-radius: 4px;"></td>
+                        <td>Deri Spor Ayakkabı</td>
+                        <td>Ayakkabı</td>
+                        <td>₺699,90</td>
+                        <td>28</td>
+                        <td><span class="status status-active">Aktif</span></td>
+                        <td>
+                            <a href="#" class="action-btn" onclick="editProduct('AKG-4017')">Düzenle</a>
+                            <a href="#" class="action-btn" onclick="deleteProduct('AKG-4017')">Sil</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>AKG-1015</td>
+                        <td><img src="/api/placeholder/60/60" alt="Ürün Görseli" width="60" height="60" style="object-fit: cover; border-radius: 4px;"></td>
+                        <td>Regular Fit Beyaz Gömlek</td>
+                        <td>Gömlek</td>
+                        <td>₺349,90</td>
+                        <td>64</td>
+                        <td><span class="status status-active">Aktif</span></td>
+                        <td>
+                            <a href="#" class="action-btn" onclick="editProduct('AKG-1015')">Düzenle</a>
+                            <a href="#" class="action-btn" onclick="deleteProduct('AKG-1015')">Sil</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>AKG-2040</td>
+                        <td><img src="/api/placeholder/60/60" alt="Ürün Görseli" width="60" height="60" style="object-fit: cover; border-radius: 4px;"></td>
+                        <td>Slim Fit Kumaş Pantolon</td>
+                        <td>Pantolon</td>
+                        <td>₺449,90</td>
+                        <td>0</td>
+                        <td><span class="status status-inactive">Stokta Yok</span></td>
+                        <td>
+                            <a href="#" class="action-btn" onclick="editProduct('AKG-2040')">Düzenle</a>
+                            <a href="#" class="action-btn" onclick="deleteProduct('AKG-2040')">Sil</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="pagination">
+                <a href="#" class="pagination-item">«</a>
+                <a href="#" class="pagination-item active">1</a>
+                <a href="#" class="pagination-item">2</a>
+                <a href="#" class="pagination-item">3</a>
+                <a href="#" class="pagination-item">»</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Ürün formunu göster/gizle
+        function toggleProductForm() {
+            const form = document.getElementById('productForm');
+            form.style.display = form.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        // Filtre alanını göster/gizle
+        function toggleFilters() {
+            alert('Filtre seçenekleri açılacak');
+        }
+        
+        // Ürün düzenleme
+        function editProduct(productCode) {
+            toggleProductForm();
+            // Normalde burada API'dan ürün bilgilerini çekip form alanlarını doldururduk
+            alert(productCode + ' kodlu ürün düzenleme başlatıldı');
+            
+            // Örnek veri doldurma
+            if(productCode === 'AKG-1001') {
+                document.getElementById('productName').value = 'Slim Fit Mavi Gömlek';
+                document.getElementById('productCode').value = 'AKG-1001';
+                document.getElementById('category').value = 'gomlek';
+                document.getElementById('price').value = '399.90';
+                document.getElementById('description').value = '%100 pamuklu kumaştan üretilen, slim fit kalıpta erkek gömleği. Uzun kollu, düğmeli yaka, tek cepli tasarım.';
+                document.getElementById('stock').value = '43';
+                document.getElementById('status').value = '1';
+                
+                // Renk seçenekleri
+                document.getElementById('colorBlue').checked = true;
+                document.getElementById('colorWhite').checked = true;
+                document.getElementById('colorBlack').checked = true;
+                
+                // Beden seçenekleri
+                document.getElementById('sizeS').checked = true;
+                document.getElementById('sizeM').checked = true;
+                document.getElementById('sizeL').checked = true;
+                document.getElementById('sizeXL').checked = true;
+                document.getElementById('sizeXXL').checked = false;
+            }
+        }
+        
+        // Ürün silme
+        function deleteProduct(productCode) {
+            if(confirm(productCode + ' kodlu ürünü silmek istediğinize emin misiniz?')) {
+                // Normalde burada API'ya silme isteği gönderilirdi
+                alert(productCode + ' kodlu ürün silindi');
+            }
+        }
+        
+        // Görsel yükleme önizlemesi
+        document.getElementById('mainImage').addEventListener('change', function(e) {
+            const preview = this.parentElement.querySelector('.image-preview');
+            const file = e.target.files[0];
+            
+            if(file) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.textContent = '';
+                    preview.style.backgroundImage = `url(${e.target.result})`;
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Form gönderimi
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Normalde burada form verileri alınıp API'ya gönderilirdi
+            alert('Ürün kaydedildi!');
+            toggleProductForm();
+        });
+    </script>
+</body>
+</html>

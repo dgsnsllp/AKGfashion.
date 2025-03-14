@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKG Fashion - Admin Paneli</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .logo h1 span {
+            color: white;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        .admin-name {
+            font-weight: 500;
+        }
+        
+        .menu {
+            padding: 20px 0;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: #34495e;
+        }
+        
+        .menu-icon {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: #2c3e50;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #3498db;
+            color: #3498db;
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+        
+        .stat-title {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 30px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .stat-change {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .positive {
+            color: #2ecc71;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table th {
+            color: #7f8c8d;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+        
+        .status-success {
+            background-color: #e8f5e9;
+            color: #2ecc71;
+        }
+        
+        .status-pending {
+            background-color: #fff8e1;
+            color: #f39c12;
+        }
+        
+        .status-cancelled {
+            background-color: #ffebee;
+            color: #e74c3c;
+        }
+        
+        .action-btn {
+            color: #3498db;
+            margin-right: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .charts {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+        
+        @media (max-width: 992px) {
+            .charts {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .logo h1, .admin-name, .menu-item span {
+                display: none;
+            }
+            
+            .menu-icon {
+                margin-right: 0;
+            }
+            
+            .content {
+                margin-left: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <h1>AKG <span>Fashion</span></h1>
+        </div>
+        <div class="admin-info">
+            <div class="admin-avatar">A</div>
+            <div class="admin-name">Admin Kullanıcı</div>
+        </div>
+        <div class="menu">
+            <a href="#" class="menu-item active">
+                <div class="menu-icon">📊</div>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-icon">📦</div>
+                <span>Ürünler</span>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-icon">🛒</div>
+                <span>Siparişler</span>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-icon">👥</div>
+                <span>Müşteriler</span>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-icon">🏷️</div>
+                <span>Kategoriler</span>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-icon">📢</div>
+                <span>Kampanyalar</span>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-icon">📝</div>
+                <span>İçerik Yönetimi</span>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-icon">⚙️</div>
+                <span>Ayarlar</span>
+            </a>
+            <a href="/admin/logout" class="menu-item">
+                <div class="menu-icon">🚪</div>
+                <span>Çıkış Yap</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div class="header">
+            <h1 class="page-title">Dashboard</h1>
+            <div class="header-actions">
+                <button class="btn btn-outline">Raporlar</button>
+                <button class="btn">+ Yeni Ürün Ekle</button>
+            </div>
+        </div>
+        
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-title">TOPLAM SATIŞ</div>
+                <div class="stat-value">₺124,563</div>
+                <div class="stat-change positive">↑ 23.5% geçen hafta</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">SİPARİŞLER</div>
+                <div class="stat-value">534</div>
+                <div class="stat-change positive">↑ 12.3% geçen hafta</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">ZİYARETÇİLER</div>
+                <div class="stat-value">9,721</div>
+                <div class="stat-change positive">↑ 5.7% geçen hafta</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">ORTALAMA SİPARİŞ DEĞERİ</div>
+                <div class="stat-value">₺233</div>
+                <div class="stat-change negative">↓ 2.1% geçen hafta</div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Son Siparişler</div>
+                <a href="#" class="btn btn-outline">Tümünü Gör</a>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sipariş No</th>
+                        <th>Müşteri</th>
+                        <th>Tarih</th>
+                        <th>Tutar</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#AKG5023</td>
+                        <td>Ahmet Yılmaz</td>
+                        <td>12 Mar 2025</td>
+                        <td>₺325.00</td>
+                        <td><span class="status status-success">Tamamlandı</span></td>
+                        <td>
+                            <a href="#" class="action-btn">Görüntüle</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#AKG5022</td>
+                        <td>Mehmet Demir</td>
+                        <td>12 Mar 2025</td>
+                        <td>₺189.90</td>
+                        <td><span class="status status-pending">Hazırlanıyor</span></td>
+                        <td>
+                            <a href="#" class="action-btn">Görüntüle</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#AKG5021</td>
+                        <td>Ali Kaya</td>
+                        <td>11 Mar 2025</td>
+                        <td>₺459.80</td>
+                        <td><span class="status status-pending">Kargoda</span></td>
+                        <td>
+                            <a href="#" class="action-btn">Görüntüle</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#AKG5020</td>
+                        <td>Ayşe Yıldız</td>
+                        <td>11 Mar 2025</td>
+                        <td>₺259.90</td>
+                        <td><span class="status status-success">Tamamlandı</span></td>
+                        <td>
+                            <a href="#" class="action-btn">Görüntüle</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#AKG5019</td>
+                        <td>Zeynep Öztürk</td>
+                        <td>10 Mar 2025</td>
+                        <td>₺199.95</td>
+                        <td><span class="status status-cancelled">İptal Edildi</span></td>
+                        <td>
+                            <a href="#" class="action-btn">Görüntüle</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">En Çok Satan Ürünler</div>
+                <a href="#" class="btn btn-outline">Tümünü Gör</a>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ürün Kodu</th>
+                        <th>Ürün Adı</th>
+                        <th>Kategori</th>
+                        <th>Stok</th>
+                        <th>Fiyat</th>
+                        <th>Satış</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>AKG-1001</td>
+                        <td>Slim Fit Mavi Gömlek</td>
+                        <td>Gömlek</td>
+                        <td>43</td>
+                        <td>₺399.90</td>
+                        <td>124</td>
+                    </tr>
+                    <tr>
+                        <td>AKG-2035</td>
+                        <td>Slim Fit Kot Pantolon</td>
+                        <td>Pantolon</td>
+                        <td>57</td>
+                        <td>₺499.90</td>
+                        <td>118</td>
+                    </tr>
+                    <tr>
+                        <td>AKG-3022</td>
+                        <td>Siyah Deri Ceket</td>
+                        <td>Ceket</td>
+                        <td>12</td>
+                        <td>₺999.90</td>
+                        <td>95</td>
+                    </tr>
+                    <tr>
+                        <td>AKG-4017</td>
+                        <td>Deri Spor Ayakkabı</td>
+                        <td>Ayakkabı</td>
+                        <td>28</td>
+                        <td>₺699.90</td>
+                        <td>87</td>
+                    </tr>
+                    <tr>
+                        <td>AKG-1015</td>
+                        <td>Regular Fit Beyaz Gömlek</td>
+                        <td>Gömlek</td>
+                        <td>64</td>
+                        <td>₺349.90</td>
+                        <td>76</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
