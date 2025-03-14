@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKG Fashion - Ürün Yönetimi</title>
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <h1>AKG <span>Fashion</span></h1>
+        </div>
+        <div class="admin-info">
+            <div class="admin-avatar">A</div>
+            <div class="admin-name">Admin Kullanıcı</div>
+        </div>
+        <div class="menu">
+            <a href="admin-dashboard.html" class="menu-item">
+                <div class="menu-icon">📊</div>
+                <span>Dashboard</span>
+            </a>
+            <a href="products.html" class="menu-item active">
+                <div class="menu-icon">📦</div>
+                <span>Ürünler</span>
+            </a>
+            <a href="orders.html" class="menu-item">
+                <div class="menu-icon">🛒</div>
+                <span>Siparişler</span>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-icon">👥</div>
+                <span>Müşteriler</span>
+            </a>
+            <a href="categories.html" class="menu-item">
+                <div class="menu-icon">🏷️</div>
+                <span>Kategoriler</span>
+            </a>
+            <a href="campaigns.html" class="menu-item">
+                <div class="menu-icon">📢</div>
+                <span>Kampanyalar</span>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-icon">📝</div>
+                <span>İçerik Yönetimi</span>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-icon">⚙️</div>
+                <span>Ayarlar</span>
+            </a>
+            <a href="/admin/logout" class="menu-item">
+                <div class="menu-icon">🚪</div>
+                <span>Çıkış Yap</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div class="header">
+            <h1 class="page-title">Ürün Yönetimi</h1>
+            <div class="header-actions">
+                <button class="btn btn-success" onclick="openModal('addProductModal')">+ Yeni Ürün Ekle</button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Ürün Listesi</div>
+            </div>
+            
+            <div class="search-form">
+                <input type="text" placeholder="Ürün adı veya kodu ara...">
+                <button class="btn">Ara</button>
+            </div>
+            
+            <div class="filter-form">
+                <select>
+                    <option value="">Kategori Seçin</option>
+                    <option value="1">Gömlek</option>
+                    <option value="2">Pantolon</option>
+                    <option value="3">Ceket</option>
+                    <option value="4">Ayakkabı</option>
+                </select>
+                <select>
+                    <option value="">Stok Durumu</option>
+                    <option value="1">Stokta Var</option>
+                    <option value="2">Stokta Az</option>
+                    <option value="3">Stokta Yok</option>
+                </select>
+                <button class="btn btn-outline">Filtreleri Temizle</button>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ürün Kodu</th>
+                        <th>Görsel</th>
+                        <th>Ürün Adı</th>
+                        <th>Kategori</th>
+                        <th>Stok</th>
+                        <th>Fiyat</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>AKG-1001</td>
+                        <td><img src="/api/placeholder/60/60" alt="Ürün Resmi" class="thumbnail"></td>
+                        <td>Slim Fit Mavi Gömlek</td>
+                        <td>Gömlek</td>
+                        <td>43</td>
+                        <td>₺399.90</td>
+                        <td><span class="status status-success">Aktif</span></td>
+                        <td>
+                            <a href="#" class="action-btn" onclick="openModal('editProductModal')">Düzenle</a>
+                            <a href="#" class="action-btn" onclick="confirmDelete('AKG-1001')">Sil</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>AKG-2035</td>
+                        <td><img src="/api/placeholder/60/60" alt="Ürün Resmi" class="thumbnail"></td>
+                        <td>Slim Fit Kot Pantolon</td>
+                        <td>Pantolon</td>
+                        <td>57</td>
+                        <td>₺499.90</td>
+                        <td><span class="status status-success">Aktif</span></td>
+                        <td>
+                            <a href="#" class="action-btn" onclick="openModal('editProductModal')">Düzenle</a>
+                            <a href="#" class="action-btn" onclick="confirmDelete('AKG-2035')">Sil</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="pagination">
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">»</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ürün Ekleme Modal -->
+    <div id="addProductModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Yeni Ürün Ekle</h2>
+                <span class="close" onclick="closeModal('addProductModal')">&times;</span>
+            </div>
+            <form id="addProductForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCode">Ürün Kodu</label>
+                        <input type="text" id="productCode" name="productCode" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productName">Ürün Adı</label>
+                        <input type="text" id="productName" name="productName" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Kategori</label>
+                        <select id="category" name="category" required>
+                            <option value="">Kategori Seçin</option>
+                            <option value="1">Gömlek</option>
+                            <option value="2">Pantolon</option>
+                            <option value="3">Ceket</option>
+                            <option value="4">Ayakkabı</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Fiyat (₺)</label>
+                        <input type="number" id="price" name="price" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="stock">Stok</label>
+                        <input type="number" id="stock" name="stock" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Durum</label>
+                        <select id="status" name="status" required>
+                            <option value="1">Aktif</option>
+                            <option value="0">Pasif</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description">Ürün Açıklaması</label>
+                    <textarea id="description" name="description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="productImage">Ürün Görseli</label>
+                    <input type="file" id="productImage" name="productImage">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Ürün Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Ürün Düzenleme Modal -->
+    <div id="editProductModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Ürün Düzenle</h2>
+                <span class="close" onclick="closeModal('editProductModal')">&times;</span>
+            </div>
+            <form id="editProductForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editProductCode">Ürün Kodu</label>
+                        <input type="text" id="editProductCode" name="productCode" value="AKG-1001" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductName">Ürün Adı</label>
+                        <input type="text" id="editProductName" name="productName" value="Slim Fit Mavi Gömlek" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editCategory">Kategori</label>
+                        <select id="editCategory" name="category" required>
+                            <option value="">Kategori Seçin</option>
+                            <option value="1" selected>Gömlek</option>
+                            <option value="2">Pantolon</option>
+                            <option value="3">Ceket</option>
+                            <option value="4">Ayakkabı</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPrice">Fiyat (₺)</label>
+                        <input type="number" id="editPrice" name="price" step="0.01" value="399.90" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editStock">Stok</label>
+                        <input type="number" id="editStock" name="stock" value="43" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStatus">Durum</label>
+                        <select id="editStatus" name="status" required>
+                            <option value="1" selected>Aktif</option>
+                            <option value="0">Pasif</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editDescription">Ürün Açıklaması</label>
+                    <textarea id="editDescription" name="description">%100 Pamuk Slim Fit Mavi Gömlek</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editProductImage">Ürün Görseli</label>
+                    <input type="file" id="editProductImage" name="productImage">
+                    <div class="current-image">
+                        <img src="/api/placeholder/100/100" alt="Mevcut Ürün Görseli" style="margin-top: 10px; max-width: 100px;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Değişiklikleri Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Modal açma fonksiyonu
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+        
+        // Modal kapatma fonksiyonu
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+        
+        // Silme onayı fonksiyonu
+        function confirmDelete(productCode) {
+            if (confirm(`${productCode} kodlu ürünü silmek istediğinizden emin misiniz?`)) {
+                alert("Ürün silindi!");
+                // Burada silme işlemi yapılabilir
+            }
+        }
+        
+        // Tıklama olayında modali kapatma
+        window.onclick = function(event) {
+            if (event.target.className === "modal") {
+                event.target.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
